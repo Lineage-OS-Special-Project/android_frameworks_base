@@ -719,6 +719,10 @@ class Transition implements BLASTSyncEngine.TransactionReadyListener {
     }
 
     protected void doActivityBoost() {
+<<<<<<< HEAD
+=======
+        PowerManagerInternal mPowerManagerInternal = LocalServices.getService(PowerManagerInternal.class);
+>>>>>>> c0ccb4c7fad0 (services: Implement transition boosting)
         if (mPowerManagerInternal != null) {
             mPowerManagerInternal.setPowerBoost(Boost.DISPLAY_UPDATE_IMMINENT, 80);
         }
