@@ -32,7 +32,6 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.android.internal.config.sysui.SystemUiDeviceConfigFlags;
-import com.android.internal.util.evolution.Utils;
 import com.android.systemui.dagger.SysUISingleton;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.settings.UserTracker;
@@ -280,7 +279,7 @@ public class QRCodeScannerController implements
         bundle.putString("caller_package", GSA_PACKAGE);
         bundle.putLong("start_activity_time_nanos", SystemClock.elapsedRealtimeNanos());
         intent.setComponent(new ComponentName(GSA_PACKAGE, LENS_ACTIVITY))
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .setPackage(GSA_PACKAGE)
                 .setData(Uri.parse("google://lens"))
                 .putExtra("lens_activity_params", bundle);
@@ -302,19 +301,18 @@ public class QRCodeScannerController implements
         String prevQrCodeScannerActivity = mQRCodeScannerActivity;
         ComponentName componentName = null;
         Intent intent = new Intent();
-        if (qrCodeScannerActivity != null && !qrCodeScannerActivity.isEmpty()) {
+        if (qrCodeScannerActivity != null) {
             componentName = ComponentName.unflattenFromString(qrCodeScannerActivity);
             intent.setComponent(componentName);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         }
 
         Intent lensIntent = getLensIntent();
-        if (intent != null && isActivityAvailable(intent)) {
+        if (isActivityAvailable(intent)) {
             mQRCodeScannerActivity = qrCodeScannerActivity;
             mComponentName = componentName;
             mIntent = intent;
-        } else if (Utils. isPackageInstalled(mContext, GSA_PACKAGE, false) &&
-                lensIntent != null && isActivityCallable(lensIntent)) {
+        } else if (isActivityCallable(lensIntent)) {
             mQRCodeScannerActivity = LENS_ACTIVITY;
             mComponentName = lensIntent.getComponent();
             mIntent = lensIntent;
