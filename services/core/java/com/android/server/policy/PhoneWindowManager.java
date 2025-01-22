@@ -856,8 +856,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private boolean mLongSwipeDown;
     private CameraAvailbilityListener mCameraAvailabilityListener;
 
-    private CameraAvailbilityListener mCameraAvailabilityListener;
-
     private class PolicyHandler extends Handler {
 
         private PolicyHandler(Looper looper) {
